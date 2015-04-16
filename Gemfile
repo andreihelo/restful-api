@@ -8,8 +8,7 @@ gem "dm-core"
 gem "dm-is-state_machine"
 gem "dm-migrations"
 gem "dm-redis-adapter"
-gem 'dm-sqlite-adapter'
-gem 'dm-mysql-adapter'
+gem 'dm-postgres-adapter'
 gem "dm-serializer"
 gem "dm-timestamps"
 gem "dm-types"
@@ -25,7 +24,3 @@ gem "unicorn"
 group :production do
   gem "do_postgres"
 end
-
-# group :development do
-#   gem "do_sqlite3"
-# end
