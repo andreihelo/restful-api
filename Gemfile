@@ -23,9 +23,9 @@ gem "systemu"
 gem "unicorn"
 
 group :production do
-  gem "do_mysql"
+  gem "do_postgres"
 end
 
-group :development do
-  gem "do_sqlite3"
-end
+# group :development do
+#   gem "do_sqlite3"
+# end
