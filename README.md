@@ -7,12 +7,6 @@ The entire application is contained within the `app.rb` file.
 
 `config.ru` is a minimal Rack configuration for unicorn.
 
-`run-tests.sh` runs a simplistic test and generates the API
-documentation below.
-
-It uses `run-curl-tests.rb` which runs each command defined in
-`commands.yml`.
-
 ## Install
 
     bundle install
@@ -21,21 +15,17 @@ It uses `run-curl-tests.rb` which runs each command defined in
 
     unicorn -p 7000
 
-## Run the tests
-
-    ./run-tests.sh
-
 # REST API
 
 The REST API to the example app is described below.
 
-## Get list of Things
+## Get list of Students
 
 ### Request
 
-`GET /thing/`
+`GET /students/`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
+    curl -i -H 'Accept: application/json' http://localhost:7000/students/
 
 ### Response
 
@@ -48,13 +38,13 @@ The REST API to the example app is described below.
 
     []
 
-## Create a new Thing
+## Create a new Student
 
 ### Request
 
-`POST /thing/`
+`POST /students/`
 
-    curl -i -H 'Accept: application/json' -d 'name=Foo&status=new' http://localhost:7000/thing
+    curl -i -H 'Accept: application/json' -d 'registration_number=123456&name=Foo%last_name=Bar&status=new' http://localhost:7000/students
 
 ### Response
 
@@ -63,10 +53,10 @@ The REST API to the example app is described below.
     Status: 201 Created
     Connection: close
     Content-Type: application/json
-    Location: /thing/1
+    Location: /students/1
     Content-Length: 36
 
-    {"id":1,"name":"Foo","status":"new"}
+    {"id":1,"registration_number":123456,"name":"Foo","last_name":"Bar","status":"new"}
 
 ## Get a specific Thing
 
@@ -346,5 +336,3 @@ The REST API to the example app is described below.
     Date: Thu, 24 Feb 2011 12:36:33 GMT
     Status: 204 No Content
     Connection: close
-
-

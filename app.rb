@@ -1,6 +1,8 @@
-## Thing
+#encoding:utf-8
+
+## Student
 # RESTful API example
-# - manages single resource called Thing /thing
+# - manages single resource called Student /students
 # - all results (including error messages) returned as JSON (Accept header)
 
 ## requires
@@ -35,29 +37,28 @@ module Validations
   end
 end
 
-### Thing
-class Thing
+### Student
+class Student
   include DataMapper::Resource
   include StandardProperties
   extend Validations
 
+  property :registration_number, Integer, :required => true
   property :name, String, :required => true
+  property :last_name, String, :required => true
   property :status, String
+
+  validates_length_of :registration_number, :equals => 6
 end
 
 ## set up db
 env = ENV["RACK_ENV"]
 puts "RACK_ENV: #{env}"
 if env.to_s.strip == ""
-  abort "Must define RACK_ENV (used for db name)"
+  abort "Must define RACK_ENV"
 end
 
-case env
-when "production"
-  DataMapper.setup(:default, "postgres://pimkzahuacapaa:JLv1wLmdl5xpURouCWucBwFz2Z@ec2-23-23-81-189.compute-1.amazonaws.com:5432/dddmb9tsem3cvs")
-else
-  DataMapper.setup(:default, "postgres://sinatra:123123@localhost/restful-api")
-end
+DataMapper.setup(:default, ENV["RESTFUL_API_DATABASE_URL"])
 
 ## create schema if necessary
 DataMapper.auto_upgrade!
@@ -67,8 +68,8 @@ def logger
   @logger ||= Logger.new(STDOUT)
 end
 
-## ThingResource application
-class ThingResource < Sinatra::Base
+## StudentResource application
+class StudentResource < Sinatra::Base
   set :methodoverride, true
 
   ## helpers
@@ -96,25 +97,25 @@ class ThingResource < Sinatra::Base
     end
   end
 
-  ## GET /thing - return all things
-  get "/thing/?", :provides => :json do
+  ## GET /students - return all students
+  get "/students/?", :provides => :json do
     content_type :json
 
-    if things = Thing.all
-      things.to_json
+    if students = Student.all
+      students.to_json
     else
       json_status 404, "Not found"
     end
   end
 
-  ## GET /thing/:id - return thing with specified id
-  get "/thing/:id", :provides => :json do
+  ## GET /students/:id - return student with specified id
+  get "/students/:id", :provides => :json do
     content_type :json
 
     # check that :id param is an integer
-    if Thing.valid_id?(params[:id])
-      if thing = Thing.first(:id => params[:id].to_i)
-        thing.to_json
+    if Student.valid_id?(params[:id])
+      if student = Student.first(:id => params[:id].to_i)
+        student.to_json
       else
         json_status 404, "Not found"
       end
@@ -124,33 +125,33 @@ class ThingResource < Sinatra::Base
     end
   end
 
-  ## POST /thing/ - create new thing
-  post "/thing/?", :provides => :json do
+  ## POST /students/ - create new student
+  post "/students/?", :provides => :json do
     content_type :json
 
-    new_params = accept_params(params, :name, :status)
-    thing = Thing.new(new_params)
-    if thing.save
-      headers["Location"] = "/thing/#{thing.id}"
+    new_params = accept_params(params, :registration_number, :name, :last_name, :status)
+    student = Student.new(new_params)
+    if student.save
+      headers["Location"] = "/students/#{student.id}"
       # http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5
       status 201 # Created
-      thing.to_json
+      student.to_json
     else
-      json_status 400, thing.errors.to_hash
+      json_status 400, student.errors.to_hash
     end
   end
 
-  ## PUT /thing/:id/:status - change a thing's status
-  put_or_post "/thing/:id/status/:status", :provides => :json do
+  ## PUT /students/:id/:status - change a student's status
+  put_or_post "/students/:id/status/:status", :provides => :json do
     content_type :json
 
-    if Thing.valid_id?(params[:id])
-      if thing = Thing.first(:id => params[:id].to_i)
-        thing.status = params[:status]
-        if thing.save
-          thing.to_json
+    if Student.valid_id?(params[:id])
+      if student = Student.first(:id => params[:id].to_i)
+        student.status = params[:status]
+        if student.save
+          student.to_json
         else
-          json_status 400, thing.errors.to_hash
+          json_status 400, student.errors.to_hash
         end
       else
         json_status 404, "Not found"
@@ -160,19 +161,19 @@ class ThingResource < Sinatra::Base
     end
   end
 
-  ## PUT /thing/:id - change or create a thing
-  put "/thing/:id", :provides => :json do
+  ## PUT /students/:id - change or create a student
+  put "/students/:id", :provides => :json do
     content_type :json
 
-    new_params = accept_params(params, :name, :status)
+    new_params = accept_params(params, :registration_number, :name, :last_name, :status)
 
-    if Thing.valid_id?(params[:id])
-      if thing = Thing.first_or_create(:id => params[:id].to_i)
-        thing.attributes = thing.attributes.merge(new_params)
-        if thing.save
-          thing.to_json
+    if Student.valid_id?(params[:id])
+      if student = Student.first_or_create(:id => params[:id].to_i)
+        student.attributes = student.attributes.merge(new_params)
+        if student.save
+          student.to_json
         else
-          json_status 400, thing.errors.to_hash
+          json_status 400, student.errors.to_hash
         end
       else
         json_status 404, "Not found"
@@ -182,12 +183,12 @@ class ThingResource < Sinatra::Base
     end
   end
 
-  ## DELETE /thing/:id - delete a specific thing
-  delete "/thing/:id/?", :provides => :json do
+  ## DELETE /students/:id - delete a specific student
+  delete "/students/:id/?", :provides => :json do
     content_type :json
 
-    if thing = Thing.first(:id => params[:id].to_i)
-      thing.destroy!
+    if student = Student.first(:id => params[:id].to_i)
+      student.destroy!
       # http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.7
       status 204 # No content
     else
@@ -224,5 +225,4 @@ class ThingResource < Sinatra::Base
   error do
     json_status 500, env['sinatra.error'].message
   end
-
 end
