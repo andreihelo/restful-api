@@ -53,10 +53,10 @@ if env.to_s.strip == ""
 end
 
 case env
-when "test"
-  DataMapper.setup(:default, "sqlite3::memory:")
+when "production"
+  DataMapper.setup(:default, "postgres://pimkzahuacapaa:JLv1wLmdl5xpURouCWucBwFz2Z@ec2-23-23-81-189.compute-1.amazonaws.com:5432/dddmb9tsem3cvs")
 else
-  DataMapper.setup(:default, "sqlite3:#{ENV["RACK_ENV"]}.db")
+  DataMapper.setup(:default, "postgres://sinatra:123123@localhost/restful-api")
 end
 
 ## create schema if necessary
