@@ -141,8 +141,8 @@ class StudentResource < Sinatra::Base
     end
   end
 
-  ## PUT /students/:id/:status - change a student's status
-  put_or_post "/students/:id/status/:status", :provides => :json do
+  ## PATCH /students/:id/:status - change a student's status
+  patch "/students/:id/status/:status", :provides => :json do
     content_type :json
 
     if Student.valid_id?(params[:id])
@@ -162,7 +162,7 @@ class StudentResource < Sinatra::Base
   end
 
   ## PUT /students/:id - change or create a student
-  put "/students/:id", :provides => :json do
+  put_or_post "/students/:id", :provides => :json do
     content_type :json
 
     new_params = accept_params(params, :registration_number, :name, :last_name, :status)
@@ -203,6 +203,11 @@ class StudentResource < Sinatra::Base
       # to return a 404 here.
       json_status 404, "Not found"
     end
+  end
+
+  options "/students" do
+    status 200
+    headers "Allow" => "GET, POST, PUT, PATCH, DELETE"
   end
 
   ## misc handlers: error, not_found, etc.

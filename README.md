@@ -58,13 +58,13 @@ The REST API to the example app is described below.
 
     {"id":1,"registration_number":123456,"name":"Foo","last_name":"Bar","status":"new"}
 
-## Get a specific Thing
+## Get a specific Student
 
 ### Request
 
-`GET /thing/id`
+`GET /students/id`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+    curl -i -H 'Accept: application/json' http://localhost:7000/students/1
 
 ### Response
 
@@ -75,15 +75,15 @@ The REST API to the example app is described below.
     Content-Type: application/json
     Content-Length: 36
 
-    {"id":1,"name":"Foo","status":"new"}
+    {"id":1,"registration_number":123456,"name":"Foo","last_name":"Bar","status":"new"}
 
-## Get a non-existent Thing
+## Get a non-existent Student
 
 ### Request
 
-`GET /thing/id`
+`GET /students/id`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/9999
+    curl -i -H 'Accept: application/json' http://localhost:7000/students/9999
 
 ### Response
 
@@ -96,13 +96,13 @@ The REST API to the example app is described below.
 
     {"status":404,"reason":"Not found"}
 
-## Create another new Thing
+## Create another new Student
 
 ### Request
 
-`POST /thing/`
+`POST /students/`
 
-    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:7000/thing
+    curl -i -H 'Accept: application/json' -d 'registration_number=654321&name=Bar&last_name=Foo' http://localhost:7000/students
 
 ### Response
 
@@ -111,18 +111,18 @@ The REST API to the example app is described below.
     Status: 201 Created
     Connection: close
     Content-Type: application/json
-    Location: /thing/2
+    Location: /student/2
     Content-Length: 35
 
-    {"id":2,"name":"Bar","status":null}
+    {"id":2,"registration_number":654321,"name":"Bar","last_name":"Foo","status":null}
 
-## Get list of Things again
+## Get list of Students again
 
 ### Request
 
-`GET /thing/`
+`GET /students/`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
+    curl -i -H 'Accept: application/json' http://localhost:7000/students/
 
 ### Response
 
@@ -133,15 +133,15 @@ The REST API to the example app is described below.
     Content-Type: application/json
     Content-Length: 74
 
-    [{"id":1,"name":"Foo","status":"new"},{"id":2,"name":"Bar","status":null}]
+    [{"id":1,"registration_number":123456,"name":"Foo","last_name":"Bar","status":"new"},{"id":2,"registration_number":654321,"name":"Bar","last_name":"Foo","status":null}]
 
-## Change a Thing's state
+## Change a Student's state
 
 ### Request
 
-`PUT /thing/:id/status/changed`
+`PATCH /students/:id/status/changed`
 
-    curl -i -H 'Accept: application/json' -X PUT http://localhost:7000/thing/1/status/changed
+    curl -i -H 'Accept: application/json' -X PATCH http://localhost:7000/students/1/status/changed
 
 ### Response
 
@@ -152,15 +152,15 @@ The REST API to the example app is described below.
     Content-Type: application/json
     Content-Length: 40
 
-    {"id":1,"name":"Foo","status":"changed"}
+    {"id":1,"registration_number":123456,"name":"Foo","last_name":"Bar","status":"changed"}
 
-## Get changed Thing
+## Get changed Student
 
 ### Request
 
-`GET /thing/id`
+`GET /students/id`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+    curl -i -H 'Accept: application/json' http://localhost:7000/students/1
 
 ### Response
 
@@ -171,15 +171,15 @@ The REST API to the example app is described below.
     Content-Type: application/json
     Content-Length: 40
 
-    {"id":1,"name":"Foo","status":"changed"}
+    {"id":1,"registration_number":123456,"name":"Foo","last_name":"Bar","status":"changed"}
 
-## Change a Thing
+## Change a Student
 
 ### Request
 
-`PUT /thing/:id`
+`PUT /students/:id`
 
-    curl -i -H 'Accept: application/json' -X PUT -d 'name=Foo&status=changed2' http://localhost:7000/thing/1
+    curl -i -H 'Accept: application/json' -X PUT -d 'name=Foo&status=changed2' http://localhost:7000/students/1
 
 ### Response
 
@@ -190,15 +190,15 @@ The REST API to the example app is described below.
     Content-Type: application/json
     Content-Length: 41
 
-    {"id":1,"name":"Foo","status":"changed2"}
+    {"id":1,"registration_number":123456,"name":"Foo","last_name":"Bar","status":"changed2"}
 
-## Attempt to change a Thing using partial params
+## Attempt to change a Student using partial params
 
 ### Request
 
-`PUT /thing/:id`
+`PUT /students/:id`
 
-    curl -i -H 'Accept: application/json' -X PUT -d 'status=changed3' http://localhost:7000/thing/1
+    curl -i -H 'Accept: application/json' -X PUT -d 'status=changed3' http://localhost:7000/students/1
 
 ### Response
 
@@ -209,15 +209,15 @@ The REST API to the example app is described below.
     Content-Type: application/json
     Content-Length: 41
 
-    {"id":1,"name":"Foo","status":"changed3"}
+    {"id":1,"registration_number":123456,"name":"Foo","last_name":"Bar","status":"changed3"}
 
-## Attempt to change a Thing using invalid params
+## Attempt to change a Student using invalid params
 
 ### Request
 
-`PUT /thing/:id`
+`PUT /students/:id`
 
-    curl -i -H 'Accept: application/json' -X PUT -d 'id=99&status=changed4' http://localhost:7000/thing/1
+    curl -i -H 'Accept: application/json' -X PUT -d 'id=99&status=changed4' http://localhost:7000/students/1
 
 ### Response
 
@@ -228,15 +228,15 @@ The REST API to the example app is described below.
     Content-Type: application/json
     Content-Length: 41
 
-    {"id":1,"name":"Foo","status":"changed4"}
+    {"id":1,"registration_number":123456,"name":"Foo","last_name":"Bar","status":"changed4"}
 
-## Change a Thing using the _method hack
+## Change a Student using the _method hack
 
 ### Request
 
-`POST /thing/:id?_method=POST`
+`POST /students/:id?_method=POST`
 
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Baz&_method=PUT' http://localhost:7000/thing/1
+    curl -i -H 'Accept: application/json' -X POST -d 'name=Baz&_method=PUT' http://localhost:7000/students/1
 
 ### Response
 
@@ -247,15 +247,15 @@ The REST API to the example app is described below.
     Content-Type: application/json
     Content-Length: 41
 
-    {"id":1,"name":"Baz","status":"changed4"}
+    {"id":1,"registration_number":123456,"name":"Baz","last_name":"Bar","status":"changed4"}
 
-## Change a Thing using the _method hack in the url
+## Change a Student using the _method hack in the url
 
 ### Request
 
-`POST /thing/:id?_method=POST`
+`POST /students/:id?_method=POST`
 
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Qux' http://localhost:7000/thing/1?_method=PUT
+    curl -i -H 'Accept: application/json' -X POST -d 'name=Qux' http://localhost:7000/students/1?_method=PUT
 
 ### Response
 
@@ -268,13 +268,13 @@ The REST API to the example app is described below.
 
     {"status":404,"reason":"Not found"}
 
-## Delete a Thing
+## Delete a Student
 
 ### Request
 
-`DELETE /thing/id`
+`DELETE /students/id`
 
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
+    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/students/1/
 
 ### Response
 
@@ -284,13 +284,13 @@ The REST API to the example app is described below.
     Connection: close
 
 
-## Try to delete same Thing again
+## Try to delete same Student again
 
 ### Request
 
-`DELETE /thing/id`
+`DELETE /students/id`
 
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
+    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/students/1/
 
 ### Response
 
@@ -303,13 +303,13 @@ The REST API to the example app is described below.
 
     {"status":404,"reason":"Not found"}
 
-## Get deleted Thing
+## Get deleted Student
 
 ### Request
 
-`GET /thing/1`
+`GET /students/1`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+    curl -i -H 'Accept: application/json' http://localhost:7000/students/1
 
 ### Response
 
@@ -322,13 +322,13 @@ The REST API to the example app is described below.
 
     {"status":404,"reason":"Not found"}
 
-## Delete a Thing using the _method hack
+## Delete a Student using the _method hack
 
 ### Request
 
-`DELETE /thing/id`
+`DELETE /students/id`
 
-    curl -i -H 'Accept: application/json' -X POST -d'_method=DELETE' http://localhost:7000/thing/2/
+    curl -i -H 'Accept: application/json' -X POST -d'_method=DELETE' http://localhost:7000/students/2/
 
 ### Response
 
@@ -336,3 +336,26 @@ The REST API to the example app is described below.
     Date: Thu, 24 Feb 2011 12:36:33 GMT
     Status: 204 No Content
     Connection: close
+
+## Delete a Student using the _method hack
+
+### Request
+
+`DELETE /students/id`
+
+    curl -i -H 'Accept: application/json' -X OPTIONS http://localhost:7000/students
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Fri, 17 Apr 2015 04:33:37 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: text/html;charset=utf-8
+    Allow: GET, POST, PUT, PATCH, DELETE
+    X-XSS-Protection: 1; mode=block
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: SAMEORIGIN
+    Transfer-Encoding: chunked
+
+    Content-TypeAllowX-XSS-ProtectionX-Content-Type-OptionsX-Frame-OptionsTransfer-Encoding
