@@ -23,7 +23,6 @@ gem "sinatra"
 gem "systemu"
 gem "unicorn"
 gem "pg"
-gem "sinatra-cross_origin"
 
 group :production do
   gem "do_postgres"

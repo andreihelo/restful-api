@@ -10,17 +10,12 @@ require 'sinatra'
 require 'json'
 require 'time'
 require 'pp'
-require 'sinatra/cross_origin'
 
 ### datamapper requires
 require 'data_mapper'
 require 'dm-types'
 require 'dm-timestamps'
 require 'dm-validations'
-
-configure do
-  enable :cross_origin
-end
 
 ## model
 ### helper modules
@@ -105,7 +100,8 @@ class StudentResource < Sinatra::Base
   ## GET /students - return all students
   get "/students/?", :provides => :json do
     content_type :json
-
+    response['Access-Control-Allow-Origin'] = '*'
+    
     if students = Student.all
       students.to_json
     else
