@@ -10,12 +10,17 @@ require 'sinatra'
 require 'json'
 require 'time'
 require 'pp'
+require 'sinatra/cross_origin'
 
 ### datamapper requires
 require 'data_mapper'
 require 'dm-types'
 require 'dm-timestamps'
 require 'dm-validations'
+
+configure do
+  enable :cross_origin
+end
 
 ## model
 ### helper modules
