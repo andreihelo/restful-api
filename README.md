@@ -337,11 +337,11 @@ The REST API to the example app is described below.
     Status: 204 No Content
     Connection: close
 
-## Delete a Student using the _method hack
+## Get supported HTTP methods
 
 ### Request
 
-`DELETE /students/id`
+`OPTIONS /students/`
 
     curl -i -H 'Accept: application/json' -X OPTIONS http://localhost:7000/students
 
