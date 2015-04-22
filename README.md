@@ -234,7 +234,7 @@ The REST API to the example app is described below.
 
 ### Request
 
-`POST /students/:id?_method=POST`
+`POST /students/:id`
 
     curl -i -H 'Accept: application/json' -X POST -d 'name=Baz&_method=PUT' http://localhost:7000/students/1
 
@@ -253,7 +253,7 @@ The REST API to the example app is described below.
 
 ### Request
 
-`POST /students/:id?_method=POST`
+`POST /students/:id?_method=PUT`
 
     curl -i -H 'Accept: application/json' -X POST -d 'name=Qux' http://localhost:7000/students/1?_method=PUT
 
@@ -266,7 +266,7 @@ The REST API to the example app is described below.
     Content-Type: text/html;charset=utf-8
     Content-Length: 35
 
-    {"status":404,"reason":"Not found"}
+    {"id":1,"registration_number":123456,"name":"Qux","last_name":"Bar","status":"changed4"}
 
 ## Delete a Student
 
@@ -326,9 +326,9 @@ The REST API to the example app is described below.
 
 ### Request
 
-`DELETE /students/id`
+`POST /students/id`
 
-    curl -i -H 'Accept: application/json' -X POST -d'_method=DELETE' http://localhost:7000/students/2/
+    curl -i -H 'Accept: application/json' -X POST -d '_method=DELETE' http://localhost:7000/students/2/
 
 ### Response
 
