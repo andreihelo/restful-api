@@ -101,7 +101,7 @@ class StudentResource < Sinatra::Base
   get "/students/?", :provides => :json do
     content_type :json
     response['Access-Control-Allow-Origin'] = '*'
-    
+
     if students = Student.all
       students.to_json
     else
@@ -112,6 +112,7 @@ class StudentResource < Sinatra::Base
   ## GET /students/:id - return student with specified id
   get "/students/:id", :provides => :json do
     content_type :json
+    response['Access-Control-Allow-Origin'] = '*'
 
     # check that :id param is an integer
     if Student.valid_id?(params[:id])
