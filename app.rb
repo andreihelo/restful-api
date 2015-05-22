@@ -130,6 +130,7 @@ class StudentResource < Sinatra::Base
   ## POST /students/ - create new student
   post "/students/?", :provides => :json do
     content_type :json
+    response['Access-Control-Allow-Origin'] = '*'
 
     new_params = accept_params(params, :registration_number, :name, :last_name, :status)
     student = Student.new(new_params)
@@ -146,6 +147,7 @@ class StudentResource < Sinatra::Base
   ## PATCH /students/:id/:status - change a student's status
   patch "/students/:id/status/:status", :provides => :json do
     content_type :json
+    response['Access-Control-Allow-Origin'] = '*'
 
     if Student.valid_id?(params[:id])
       if student = Student.first(:id => params[:id].to_i)
@@ -166,6 +168,7 @@ class StudentResource < Sinatra::Base
   ## PUT /students/:id - change or create a student
   put_or_post "/students/:id", :provides => :json do
     content_type :json
+    response['Access-Control-Allow-Origin'] = '*'
 
     new_params = accept_params(params, :registration_number, :name, :last_name, :status)
 
@@ -188,6 +191,7 @@ class StudentResource < Sinatra::Base
   ## DELETE /students/:id - delete a specific student
   delete "/students/:id/?", :provides => :json do
     content_type :json
+    response['Access-Control-Allow-Origin'] = '*'
 
     if student = Student.first(:id => params[:id].to_i)
       student.destroy!
