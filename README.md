@@ -352,7 +352,7 @@ The REST API to the example app is described below.
     Status: 200 OK
     Connection: close
     Content-Type: text/html;charset=utf-8
-    Allow: GET, POST, PUT, PATCH, DELETE
+    Allow: GET, POST, PUT, PATCH, DELETE, OPTIONS
     X-XSS-Protection: 1; mode=block
     X-Content-Type-Options: nosniff
     X-Frame-Options: SAMEORIGIN

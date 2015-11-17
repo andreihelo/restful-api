@@ -73,7 +73,6 @@ class StudentResource < Sinatra::Base
   set :methodoverride, true
 
   ## helpers
-
   def self.put_or_post(*a, &b)
     put *a, &b
     post *a, &b
@@ -134,6 +133,7 @@ class StudentResource < Sinatra::Base
 
     new_params = accept_params(params, :registration_number, :name, :last_name, :status)
     student = Student.new(new_params)
+
     if student.save
       headers["Location"] = "/students/#{student.id}"
       # http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5
