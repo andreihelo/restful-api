@@ -213,7 +213,7 @@ class StudentResource < Sinatra::Base
 
   options "/students" do
     status 200
-    headers "Allow" => "GET, POST, PUT, PATCH, DELETE"
+    headers "Allow" => "GET, POST, PUT, PATCH, DELETE, OPTIONS"
   end
 
   ## misc handlers: error, not_found, etc.
