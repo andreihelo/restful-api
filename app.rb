@@ -213,6 +213,7 @@ class StudentResource < Sinatra::Base
 
   options "/students" do
     response['Access-Control-Allow-Origin'] = '*'
+    response['Access-Control-Allow-Methods'] = 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
     status 200
     headers "Allow" => "GET, POST, PUT, PATCH, DELETE, OPTIONS"
   end
